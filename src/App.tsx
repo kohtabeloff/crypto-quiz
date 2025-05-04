@@ -106,7 +106,7 @@ function App() {
       alert('You can only restore a life via Farcaster cast once per day!');
       return;
     }
-    const inviteLink = 'YOUR_VERCEL_URL'; // Замени на твой Vercel URL (например, https://your-app.vercel.app)
+    const inviteLink = 'https://crypto-quiz-9toy.vercel.app';
     const castText = `Join me in the Blockchain Brainteaser quiz on Farcaster! Test your crypto knowledge: ${inviteLink} #BlockchainBrainteaser`;
     window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(castText)}`, '_blank');
     setTimeout(() => {
