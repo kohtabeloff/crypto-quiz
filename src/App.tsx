@@ -14,45 +14,35 @@ function App() {
 
   const getStorageKey = (key: string) => address ? `${address}_${key}` : key;
 
-  const [currentQuestion, setCurrentQuestion] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey('currentQuestion'));
-    return saved ? parseInt(saved) : 0;
-  });
-  const [score, setScore] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey('score'));
-    return saved ? parseInt(saved) : 0;
-  });
-  const [lives, setLives] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey('lives'));
-    return saved ? parseInt(saved) : 3;
-  });
-  const [lastLifeUpdate, setLastLifeUpdate] = useState(() => {
-    return localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString();
-  });
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [lives, setLives] = useState(3);
+  const [lastLifeUpdate, setLastLifeUpdate] = useState(new Date().toISOString());
   const [feedback, setFeedback] = useState('');
   const [feedbackImage, setFeedbackImage] = useState('');
-  const [gameOver, setGameOver] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey('gameOver'));
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [showFinalScreen, setShowFinalScreen] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey('showFinalScreen'));
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [showGameOverPrompt, setShowGameOverPrompt] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey('showGameOverPrompt'));
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [lastRoundTimestamp, setLastRoundTimestamp] = useState(() => {
-    return localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0';
-  });
-  const [lastCastTimestamp, setLastCastTimestamp] = useState(() => {
-    return localStorage.getItem(getStorageKey('lastCastTimestamp')) || '0';
-  });
-  const [lastDonateTimestamp, setLastDonateTimestamp] = useState(() => {
-    return localStorage.getItem(getStorageKey('lastDonateTimestamp')) || '0';
-  });
+  const [gameOver, setGameOver] = useState(false);
+  const [showFinalScreen, setShowFinalScreen] = useState(false);
+  const [showGameOverPrompt, setShowGameOverPrompt] = useState(false);
+  const [lastRoundTimestamp, setLastRoundTimestamp] = useState('0');
+  const [lastCastTimestamp, setLastCastTimestamp] = useState('0');
+  const [lastDonateTimestamp, setLastDonateTimestamp] = useState('0');
   const maxQuestions = 10;
+
+  // Загрузка состояния из localStorage после получения address
+  useEffect(() => {
+    if (address) {
+      setCurrentQuestion(parseInt(localStorage.getItem(getStorageKey('currentQuestion')) || '0'));
+      setScore(parseInt(localStorage.getItem(getStorageKey('score')) || '0'));
+      setLives(parseInt(localStorage.getItem(getStorageKey('lives')) || '3'));
+      setLastLifeUpdate(localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString());
+      setGameOver(JSON.parse(localStorage.getItem(getStorageKey('gameOver')) || 'false'));
+      setShowFinalScreen(JSON.parse(localStorage.getItem(getStorageKey('showFinalScreen')) || 'false'));
+      setShowGameOverPrompt(JSON.parse(localStorage.getItem(getStorageKey('showGameOverPrompt')) || 'false'));
+      setLastRoundTimestamp(localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0');
+      setLastCastTimestamp(localStorage.getItem(getStorageKey('lastCastTimestamp')) || '0');
+      setLastDonateTimestamp(localStorage.getItem(getStorageKey('lastDonateTimestamp')) || '0');
+    }
+  }, [address]);
 
   const handleConnect = async () => {
     try {
@@ -69,6 +59,17 @@ function App() {
       await disconnect();
       alert('Wallet disconnected!');
       localStorage.clear(); // Очищаем localStorage
+      // Сбрасываем состояние
+      setCurrentQuestion(0);
+      setScore(0);
+      setLives(3);
+      setLastLifeUpdate(new Date().toISOString());
+      setGameOver(false);
+      setShowFinalScreen(false);
+      setShowGameOverPrompt(false);
+      setLastRoundTimestamp('0');
+      setLastCastTimestamp('0');
+      setLastDonateTimestamp('0');
     } catch (error: unknown) {
       console.error('Disconnect error:', error);
       alert('Disconnect failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
@@ -287,12 +288,14 @@ function App() {
   }, [lives, lastLifeUpdate, address]);
 
   useEffect(() => {
-    localStorage.setItem(getStorageKey('currentQuestion'), currentQuestion.toString());
-    localStorage.setItem(getStorageKey('score'), score.toString());
-    localStorage.setItem(getStorageKey('lives'), lives.toString());
-    localStorage.setItem(getStorageKey('gameOver'), JSON.stringify(gameOver));
-    localStorage.setItem(getStorageKey('showFinalScreen'), JSON.stringify(showFinalScreen));
-    localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(showGameOverPrompt));
+    if (address) {
+      localStorage.setItem(getStorageKey('currentQuestion'), currentQuestion.toString());
+      localStorage.setItem(getStorageKey('score'), score.toString());
+      localStorage.setItem(getStorageKey('lives'), lives.toString());
+      localStorage.setItem(getStorageKey('gameOver'), JSON.stringify(gameOver));
+      localStorage.setItem(getStorageKey('showFinalScreen'), JSON.stringify(showFinalScreen));
+      localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(showGameOverPrompt));
+    }
   }, [currentQuestion, score, lives, gameOver, showFinalScreen, showGameOverPrompt, address]);
 
   const handleAnswer = (index: number) => {
@@ -400,7 +403,6 @@ function App() {
           )}
           <p>Score: {score}</p>
           <p>Lives: {lives}</p>
-         .pd
           <p>Multiplier: x{multiplier.toFixed(1)}</p>
           <p>
             {lives < 3
