@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { questionSets } from './questions';
 import './index.css';
-import { useSDK, useAddress, useConnect, metamaskWallet } from '@thirdweb-dev/react';
+import { useSDK, useAddress, useConnect, useDisconnect, metamaskWallet } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 
 function App() {
   const address = useAddress();
   const sdk = useSDK();
   const connect = useConnect();
+  const disconnect = useDisconnect();
+
+  console.log('Address:', address); // Отладка
 
   const getStorageKey = (key: string) => address ? `${address}_${key}` : key;
 
@@ -41,7 +44,19 @@ function App() {
       await connect(metamaskWallet());
       alert('Wallet connected!');
     } catch (error: unknown) {
+      console.error('Connect error:', error);
       alert('Wallet connection failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      await disconnect();
+      alert('Wallet disconnected!');
+      localStorage.clear(); // Очищаем localStorage при отключении
+    } catch (error: unknown) {
+      console.error('Disconnect error:', error);
+      alert('Disconnect failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -90,6 +105,7 @@ function App() {
       localStorage.setItem(getStorageKey('lastRoundTimestamp'), '0');
       alert('Lives restored! Thank you for your donation!');
     } catch (error: unknown) {
+      console.error('Donate error:', error);
       alert('Donation failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
@@ -292,6 +308,12 @@ function App() {
         <div>
           <p>Please connect your wallet to play!</p>
           <button onClick={handleConnect}>Connect Wallet</button>
+        </div>
+      )}
+      {address && (
+        <div>
+          <p>Connected: {address.slice(0, 6)}...{address.slice(-4)}</p>
+          <button onClick={handleDisconnect}>Disconnect Wallet</button>
         </div>
       )}
       {address && showGameOverPrompt ? (
