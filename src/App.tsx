@@ -58,8 +58,7 @@ function App() {
     try {
       await disconnect();
       alert('Wallet disconnected!');
-      localStorage.clear(); // Очищаем localStorage
-      // Сбрасываем состояние
+      // Сбрасываем только UI-состояние, сохраняя localStorage
       setCurrentQuestion(0);
       setScore(0);
       setLives(3);
