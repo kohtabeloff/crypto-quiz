@@ -26,6 +26,7 @@ function App() {
   const [lastRoundTimestamp, setLastRoundTimestamp] = useState('0');
   const [lastCastTimestamp, setLastCastTimestamp] = useState('0');
   const [lastDonateTimestamp, setLastDonateTimestamp] = useState('0');
+  const [isAnswering, setIsAnswering] = useState(false); // Новое состояние для блокировки
   const maxQuestions = 10;
 
   // Загрузка состояния из localStorage после получения address
@@ -298,7 +299,8 @@ function App() {
   }, [currentQuestion, score, lives, gameOver, showFinalScreen, showGameOverPrompt, address]);
 
   const handleAnswer = (index: number) => {
-    if (gameOver || showFinalScreen || showGameOverPrompt) return;
+    if (gameOver || showFinalScreen || showGameOverPrompt || isAnswering) return; // Блокировка при isAnswering
+    setIsAnswering(true); // Блокируем кнопки
 
     let newLives = lives;
     if (index === selectedQuestions[currentQuestion].correct) {
@@ -325,12 +327,14 @@ function App() {
         localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
         localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(newLives <= 0));
         localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
+        setIsAnswering(false); // Разблокируем кнопки
       }, 1500);
     } else {
       setTimeout(() => {
         setCurrentQuestion(currentQuestion + 1);
         setFeedback('');
         setFeedbackImage('');
+        setIsAnswering(false); // Разблокируем кнопки
       }, 1500);
     }
   };
@@ -390,7 +394,11 @@ function App() {
           <h2>Question {currentQuestion + 1}</h2>
           <p>{selectedQuestions[currentQuestion].text}</p>
           {selectedQuestions[currentQuestion].options.map((option, index) => (
-            <button key={index} onClick={() => handleAnswer(index)} disabled={!canPlayRound()}>
+            <button
+              key={index}
+              onClick={() => handleAnswer(index)}
+              disabled={!canPlayRound() || isAnswering} // Блокировка кнопок
+            >
               {option}
             </button>
           ))}
