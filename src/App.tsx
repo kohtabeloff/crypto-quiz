@@ -101,6 +101,10 @@ function App() {
         return;
       }
       const provider = signer.provider;
+      if (!provider) {
+        alert('Provider not available. Please reconnect wallet.');
+        return;
+      }
       const network = await provider.getNetwork();
       const expectedChainId = 1; // Ethereum Mainnet
       if (network.chainId !== expectedChainId) {
@@ -396,6 +400,7 @@ function App() {
           )}
           <p>Score: {score}</p>
           <p>Lives: {lives}</p>
+         .pd
           <p>Multiplier: x{multiplier.toFixed(1)}</p>
           <p>
             {lives < 3
