@@ -106,9 +106,9 @@ function App() {
         return;
       }
       const network = await provider.getNetwork();
-      const expectedChainId = 1; // Ethereum Mainnet
+      const expectedChainId = 8453; // Base Mainnet
       if (network.chainId !== expectedChainId) {
-        alert(`Please switch to Ethereum Mainnet (current network: ${network.name})`);
+        alert(`Please switch to Base Mainnet (current network: ${network.name})`);
         return;
       }
       const balance = await signer.getBalance();
