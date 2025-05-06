@@ -12,7 +12,7 @@ function App() {
 
   console.log('Address:', address); // Отладка
 
-  const getStorageKey = (key: string) => address ? `${address}_${key}` : key;
+  const getStorageKey = (key: string) => (address ? `${address}_${key}` : key);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -460,7 +460,7 @@ function App() {
           {feedback && (
             <div>
               <p>{feedback}</p>
-              <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />
+              {feedbackImage && <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />}
             </div>
           )}
           <p>Score: {score}</p>
@@ -472,11 +472,11 @@ function App() {
               ? `Next life in ~${getTimeUntilNextLife()} min`
               : 'Lives full!'}
           </p>
-          {lives === 0 && (
-            <>
+          {lives <= 0 && (
+            <div>
               {canDonate() && <button onClick={handleDonate}>Restore Lives (0.0001 ETH)</button>}
               {canCast() && <button onClick={handleCast}>Cast on Farcaster for 1 Life</button>}
-            </>
+            </div>
           )}
           {!canPlayRound() && (
             <p>Next round in ~{getTimeUntilNextRound()} min</p>
@@ -485,10 +485,10 @@ function App() {
       ) : address && (
         <div>
           <h2>{feedback}</h2>
-          <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />
+          {feedbackImage && <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />}
           <p>Final Score: {score}</p>
           <p>Total Score: {totalScore}</p>
-          {lives === 0 ? (
+          {lives <= 0 ? (
             <>
               <p>Want to continue playing?</p>
               <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
