@@ -340,35 +340,55 @@ function App() {
       });
       setFeedback('Correct!');
       setFeedbackImage('/rocker.png');
+      if (currentQuestion + 1 === maxQuestions) {
+        setTimeout(() => {
+          setGameOver(true);
+          setShowFinalScreen(true);
+          setShowGameOverPrompt(false);
+          setLastRoundTimestamp(Date.now().toString());
+          setFeedback('Round Completed!');
+          setFeedbackImage('/bull.png');
+          localStorage.setItem(getStorageKey('gameOver'), 'true');
+          localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
+          localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
+          localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
+          setIsAnswering(false);
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          setCurrentQuestion(currentQuestion + 1);
+          setFeedback('');
+          setFeedbackImage('');
+          setIsAnswering(false);
+        }, 1500);
+      }
     } else {
       newLives = lives - 1;
       setLives(newLives);
       localStorage.setItem(getStorageKey('lives'), newLives.toString());
       setFeedback('Wrong!');
-      setFeedbackImage('/bear.png');
-    }
-
-    if (currentQuestion + 1 === maxQuestions || newLives <= 0) {
-      setTimeout(() => {
-        setGameOver(true);
-        setShowFinalScreen(true);
-        setShowGameOverPrompt(newLives <= 0);
-        setLastRoundTimestamp(Date.now().toString());
-        setFeedback(newLives <= 0 ? 'Game Over!' : 'Round Completed!');
-        setFeedbackImage(newLives <= 0 ? '/bear.png' : '/bull.png');
-        localStorage.setItem(getStorageKey('gameOver'), 'true');
-        localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
-        localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(newLives <= 0));
-        localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
-        setIsAnswering(false);
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        setCurrentQuestion(currentQuestion + 1);
-        setFeedback('');
-        setFeedbackImage('');
-        setIsAnswering(false);
-      }, 1500);
+      setFeedbackImage('/wrong.png'); // Новая картинка для неверного ответа
+      if (newLives <= 0) {
+        setTimeout(() => {
+          setGameOver(true);
+          setShowFinalScreen(true);
+          setShowGameOverPrompt(true);
+          setLastRoundTimestamp(Date.now().toString());
+          setFeedback('Game Over!');
+          setFeedbackImage('/gameover.png'); // Новый мем для Game Over
+          localStorage.setItem(getStorageKey('gameOver'), 'true');
+          localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
+          localStorage.setItem(getStorageKey('showGameOverPrompt'), 'true');
+          localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
+          setIsAnswering(false);
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          setFeedback('');
+          setFeedbackImage('');
+          setIsAnswering(false);
+        }, 1500); // Остаёмся на текущем вопросе
+      }
     }
   };
 
@@ -419,7 +439,7 @@ function App() {
           <p>Final Score: {score}</p>
           <p>Total Score: {totalScore}</p>
           <p>Want to continue playing?</p>
-          <img src="/bear.png" alt="game over" style={{ width: '100px' }} />
+          <img src="/gameover.png" alt="game over" style={{ width: '100px' }} />
           <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
           {canDonate() && <button onClick={handleDonate}>Restore Lives (0.0001 ETH)</button>}
           {canCast() && <button onClick={handleCast}>Cast on Farcaster for 1 Life</button>}
