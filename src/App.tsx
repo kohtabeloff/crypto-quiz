@@ -16,7 +16,7 @@ function App() {
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
-  const [totalScore, setTotalScore] = useState(0); // Новое состояние для суммарных очков
+  const [totalScore, setTotalScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [lastLifeUpdate, setLastLifeUpdate] = useState(new Date().toISOString());
   const [feedback, setFeedback] = useState('');
@@ -33,14 +33,37 @@ function App() {
   // Загрузка состояния из localStorage после получения address
   useEffect(() => {
     if (address) {
-      setCurrentQuestion(parseInt(localStorage.getItem(getStorageKey('currentQuestion')) || '0'));
-      setScore(parseInt(localStorage.getItem(getStorageKey('score')) || '0'));
-      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0')); // Загружаем totalScore
-      setLives(parseInt(localStorage.getItem(getStorageKey('lives')) || '3'));
+      const lastRound = parseInt(localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0');
+      const oneDayInMs = 24 * 60 * 60 * 1000;
+      const isNewDay = Date.now() - lastRound >= oneDayInMs;
+
+      if (isNewDay) {
+        // Новый день: сбрасываем игру
+        setCurrentQuestion(0);
+        setScore(0);
+        setLives(3);
+        setGameOver(false);
+        setShowFinalScreen(false);
+        setShowGameOverPrompt(false);
+        localStorage.setItem(getStorageKey('currentQuestion'), '0');
+        localStorage.setItem(getStorageKey('score'), '0');
+        localStorage.setItem(getStorageKey('lives'), '3');
+        localStorage.setItem(getStorageKey('gameOver'), 'false');
+        localStorage.setItem(getStorageKey('showFinalScreen'), 'false');
+        localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
+      } else {
+        // Продолжаем старую игру
+        setCurrentQuestion(parseInt(localStorage.getItem(getStorageKey('currentQuestion')) || '0'));
+        setScore(parseInt(localStorage.getItem(getStorageKey('score')) || '0'));
+        setLives(parseInt(localStorage.getItem(getStorageKey('lives')) || '3'));
+        setGameOver(JSON.parse(localStorage.getItem(getStorageKey('gameOver')) || 'false'));
+        setShowFinalScreen(JSON.parse(localStorage.getItem(getStorageKey('showFinalScreen')) || 'false'));
+        setShowGameOverPrompt(JSON.parse(localStorage.getItem(getStorageKey('showGameOverPrompt')) || 'false'));
+      }
+
+      // TotalScore и таймеры загружаем всегда
+      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0'));
       setLastLifeUpdate(localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString());
-      setGameOver(JSON.parse(localStorage.getItem(getStorageKey('gameOver')) || 'false'));
-      setShowFinalScreen(JSON.parse(localStorage.getItem(getStorageKey('showFinalScreen')) || 'false'));
-      setShowGameOverPrompt(JSON.parse(localStorage.getItem(getStorageKey('showGameOverPrompt')) || 'false'));
       setLastRoundTimestamp(localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0');
       setLastCastTimestamp(localStorage.getItem(getStorageKey('lastCastTimestamp')) || '0');
       setLastDonateTimestamp(localStorage.getItem(getStorageKey('lastDonateTimestamp')) || '0');
@@ -61,10 +84,10 @@ function App() {
     try {
       await disconnect();
       alert('Wallet disconnected!');
-      // Сбрасываем только UI-состояние, сохраняя localStorage
+      // Сбрасываем UI-состояние, сохраняя localStorage
       setCurrentQuestion(0);
       setScore(0);
-      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0')); // Сохраняем totalScore
+      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0'));
       setLives(3);
       setLastLifeUpdate(new Date().toISOString());
       setGameOver(false);
@@ -294,7 +317,7 @@ function App() {
     if (address) {
       localStorage.setItem(getStorageKey('currentQuestion'), currentQuestion.toString());
       localStorage.setItem(getStorageKey('score'), score.toString());
-      localStorage.setItem(getStorageKey('totalScore'), totalScore.toString()); // Сохраняем totalScore
+      localStorage.setItem(getStorageKey('totalScore'), totalScore.toString());
       localStorage.setItem(getStorageKey('lives'), lives.toString());
       localStorage.setItem(getStorageKey('gameOver'), JSON.stringify(gameOver));
       localStorage.setItem(getStorageKey('showFinalScreen'), JSON.stringify(showFinalScreen));
@@ -312,7 +335,7 @@ function App() {
       setScore(newScore);
       setTotalScore(prev => {
         const updatedTotal = prev + 10 * multiplier;
-        localStorage.setItem(getStorageKey('totalScore'), updatedTotal.toString()); // Обновляем totalScore
+        localStorage.setItem(getStorageKey('totalScore'), updatedTotal.toString());
         return updatedTotal;
       });
       setFeedback('Correct!');
@@ -352,7 +375,7 @@ function App() {
   const handleRestart = () => {
     if (lives <= 0 || !canPlayRound()) return;
     setCurrentQuestion(0);
-    setScore(0); // Сбрасываем score, но не totalScore
+    setScore(0);
     setLives(3);
     setFeedback('');
     setFeedbackImage('');
@@ -393,8 +416,8 @@ function App() {
       {address && showGameOverPrompt ? (
         <div>
           <h2>Game Over!</h2>
-          <p>Final Score: {score}</p> {/* Показываем score при Game Over */}
-          <p>Total Score: {totalScore}</p> {/* Показываем totalScore */}
+          <p>Final Score: {score}</p>
+          <p>Total Score: {totalScore}</p>
           <p>Want to continue playing?</p>
           <img src="/bear.png" alt="game over" style={{ width: '100px' }} />
           <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
@@ -421,7 +444,7 @@ function App() {
             </div>
           )}
           <p>Score: {score}</p>
-          <p>Total Score: {totalScore}</p> {/* Показываем totalScore в игре */}
+          <p>Total Score: {totalScore}</p>
           <p>Lives: {lives}</p>
           <p>Multiplier: x{multiplier.toFixed(1)}</p>
           <p>
@@ -444,7 +467,7 @@ function App() {
           <h2>{feedback}</h2>
           <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />
           <p>Final Score: {score}</p>
-          <p>Total Score: {totalScore}</p> {/* Показываем totalScore при завершении */}
+          <p>Total Score: {totalScore}</p>
           {lives === 0 ? (
             <>
               <p>Want to continue playing?</p>
