@@ -1,465 +1,131 @@
 export const questionSets = [
-  // Set 1 (Day 1)
-  [
-    // Простые
-    {
-      text: "What does HODL stand for?",
-      options: ["Hold On for Dear Life", "Sell at the Peak", "Mine Bitcoin"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is Bitcoin's creator pseudonym?",
-      options: ["Satoshi Nakamoto", "Vitalik Buterin", "Elon Musk"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is an NFT?",
-      options: ["Non-Fungible Token", "Fungible Token", "Stablecoin"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is the main purpose of a crypto wallet?",
-      options: ["Store private keys", "Mine tokens", "Trade assets"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is DeFi?",
-      options: ["Decentralized Finance", "Centralized Exchange", "Mining Pool"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a gas fee?",
-      options: ["Transaction fee on blockchain", "Storage cost", "Miners' salary"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a DAO?",
-      options: ["Decentralized Autonomous Organization", "Centralized Exchange", "Token Standard"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is Base?",
-      options: ["Layer-2 blockchain by Coinbase", "Layer-1 blockchain", "Crypto exchange"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "Which consensus mechanism does Ethereum currently use?",
-      options: ["Proof of Stake", "Proof of Work", "Proof of Authority"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is the purpose of a public key in crypto?",
-      options: ["Receive transactions", "Sign transactions", "Encrypt wallet"],
-      correct: 0,
-      difficulty: 3,
-    },
+  [ // Day 1
+    { text: "What is Bitcoin's max supply?", options: ["21M", "100M", "50M", "10M"], correct: 0, difficulty: 1 },
+    { text: "Who created Ethereum?", options: ["Vitalik Buterin", "Satoshi Nakamoto", "Gavin Wood", "Charles Hoskinson"], correct: 0, difficulty: 2 },
+    { text: "What is a smart contract?", options: ["Self-executing code", "Legal document", "Crypto wallet", "Blockchain fork"], correct: 0, difficulty: 3 },
+    { text: "Which consensus does Ethereum use now?", options: ["Proof of Stake", "Proof of Work", "Proof of Authority", "Proof of Space"], correct: 0, difficulty: 2 },
+    { text: "What is DeFi short for?", options: ["Decentralized Finance", "Digital Finance", "Distributed Funding", "Decentralized Funding"], correct: 0, difficulty: 1 },
+    { text: "What is the native token of Binance Smart Chain?", options: ["BNB", "ETH", "BUSD", "CAKE"], correct: 0, difficulty: 2 },
+    { text: "What does NFT stand for?", options: ["Non-Fungible Token", "New Financial Tool", "Non-Financial Transaction", "Network File Transfer"], correct: 0, difficulty: 1 },
+    { text: "Which blockchain uses ADA?", options: ["Cardano", "Solana", "Polkadot", "Tezos"], correct: 0, difficulty: 2 },
+    { text: "What is a DAO?", options: ["Decentralized Autonomous Organization", "Digital Asset Option", "Distributed Application Output", "Decentralized Account Operator"], correct: 0, difficulty: 3 },
+    { text: "What is gas in Ethereum?", options: ["Transaction fee", "Cryptocurrency", "Smart contract", "Block reward"], correct: 0, difficulty: 2 },
   ],
-  // Set 2 (Day 2)
-  [
-    // Простые
-    {
-      text: "What is a blockchain?",
-      options: ["Decentralized ledger", "Centralized database", "Mining software"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a stablecoin?",
-      options: ["Cryptocurrency pegged to an asset", "Volatile token", "Mining reward"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What does BTC stand for?",
-      options: ["Bitcoin", "Blockchain Token", "Bytecoin"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto exchange?",
-      options: ["Platform to trade cryptocurrencies", "Mining pool", "Wallet software"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is a smart contract?",
-      options: ["Self-executing code on blockchain", "Legal agreement", "Mining algorithm"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a Layer-2 solution?",
-      options: ["Scalability layer for blockchain", "Main blockchain", "Centralized server"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a token standard like ERC-20?",
-      options: ["Rules for token creation", "Mining protocol", "Wallet type"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto airdrop?",
-      options: ["Free token distribution", "Mining reward", "Exchange fee"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "What is the Ethereum Virtual Machine (EVM)?",
-      options: ["Runtime environment for smart contracts", "Mining hardware", "Wallet software"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is a 51% attack?",
-      options: ["Controlling majority of network hash rate", "Hacking a wallet", "Phishing scam"],
-      correct: 0,
-      difficulty: 3,
-    },
+  [ // Day 2
+    { text: "What is the purpose of a blockchain?", options: ["Decentralized ledger", "Centralized database", "Cloud storage", "Social network"], correct: 0, difficulty: 1 },
+    { text: "Who proposed Bitcoin?", options: ["Satoshi Nakamoto", "Vitalik Buterin", "Elon Musk", "Hal Finney"], correct: 0, difficulty: 2 },
+    { text: "What is a private key?", options: ["Secret to access wallet", "Public address", "Smart contract code", "Transaction ID"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses SOL?", options: ["Solana", "Avalanche", "Fantom", "Polygon"], correct: 0, difficulty: 1 },
+    { text: "What is a fork in blockchain?", options: ["Protocol change", "New token", "Wallet split", "Mining pool"], correct: 0, difficulty: 3 },
+    { text: "What is staking?", options: ["Locking tokens for rewards", "Trading tokens", "Burning tokens", "Minting tokens"], correct: 0, difficulty: 2 },
+    { text: "What is a Merkle Tree?", options: ["Data structure for transactions", "Consensus algorithm", "Smart contract type", "Wallet security"], correct: 0, difficulty: 3 },
+    { text: "Which chain has DOT token?", options: ["Polkadot", "Cosmos", "Cardano", "Tezos"], correct: 0, difficulty: 2 },
+    { text: "What is a wallet nonce?", options: ["Transaction counter", "Private key", "Block height", "Gas limit"], correct: 0, difficulty: 3 },
+    { text: "What is a layer-2 solution?", options: ["Scalability off-chain", "New blockchain", "Mining algorithm", "Wallet type"], correct: 0, difficulty: 2 },
   ],
-  // Set 3 (Day 3)
+  // Day 3
   [
-    // Простые
-    {
-      text: "What is the symbol for Ethereum?",
-      options: ["ETH", "BTC", "XRP"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a private key used for?",
-      options: ["Sign transactions", "Receive funds", "Mine blocks"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a cryptocurrency?",
-      options: ["Digital currency using cryptography", "Physical coin", "Stock asset"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a cold wallet?",
-      options: ["Offline crypto storage", "Online wallet", "Mining device"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is a liquidity pool in DeFi?",
-      options: ["Pool of tokens for trading", "Mining reserve", "Wallet storage"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a hard fork?",
-      options: ["Major blockchain protocol change", "Minor update", "New wallet type"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a wrapped token?",
-      options: ["Token representing another asset", "Stablecoin", "Mining reward"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto bridge?",
-      options: ["Connects two blockchains", "Mining tool", "Exchange platform"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "What is sharding in blockchain?",
-      options: ["Splitting network for scalability", "Encrypting transactions", "Mining technique"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is a Merkle tree used for?",
-      options: ["Efficient transaction verification", "Mining blocks", "Wallet security"],
-      correct: 0,
-      difficulty: 3,
-    },
+    { text: "What is a hash function?", options: ["Maps data to fixed size", "Encrypts transactions", "Mines blocks", "Signs contracts"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses XTZ?", options: ["Tezos", "Cardano", "Solana", "Avalanche"], correct: 0, difficulty: 1 },
+    { text: "What is a DApp?", options: ["Decentralized Application", "Digital Asset", "Distributed Algorithm", "Decentralized Account"], correct: 0, difficulty: 1 },
+    { text: "What is EVM?", options: ["Ethereum Virtual Machine", "Encrypted Value Model", "External Validation Module", "Ethereum Voting Mechanism"], correct: 0, difficulty: 2 },
+    { text: "What is a stablecoin?", options: ["Pegged to asset", "Volatile token", "Mining reward", "Governance token"], correct: 0, difficulty: 1 },
+    { text: "What is a 51% attack?", options: ["Controlling majority hash power", "Hacking wallets", "Forking chain", "Spamming transactions"], correct: 0, difficulty: 3 },
+    { text: "Which chain uses AVAX?", options: ["Avalanche", "Fantom", "Polygon", "Solana"], correct: 0, difficulty: 2 },
+    { text: "What is a multisig wallet?", options: ["Multiple signatures needed", "Single key wallet", "Cold storage", "Hardware wallet"], correct: 0, difficulty: 2 },
+    { text: "What is a sidechain?", options: ["Parallel blockchain", "Mainnet fork", "Smart contract", "Wallet backup"], correct: 0, difficulty: 3 },
+    { text: "What is a rug pull?", options: ["Scam by developers", "Market crash", "Fork failure", "Gas fee spike"], correct: 0, difficulty: 2 },
   ],
-  // Set 4 (Day 4)
+  // Day 4
   [
-    // Простые
-    {
-      text: "What does DApp stand for?",
-      options: ["Decentralized Application", "Digital Asset", "Distributed Algorithm"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a hot wallet?",
-      options: ["Online crypto storage", "Offline storage", "Mining software"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is the main currency of Binance Smart Chain?",
-      options: ["BNB", "ETH", "BTC"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto token?",
-      options: ["Digital asset on blockchain", "Physical coin", "Mining hardware"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is a crypto oracle?",
-      options: ["Provides external data to blockchain", "Mining validator", "Wallet type"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a soft fork?",
-      options: ["Backward-compatible protocol change", "Major overhaul", "New blockchain"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a yield farm in DeFi?",
-      options: ["Earning rewards by staking tokens", "Mining pool", "Wallet feature"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a sidechain?",
-      options: ["Blockchain linked to main chain", "Main blockchain", "Centralized server"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "What is a zero-knowledge proof?",
-      options: ["Proving statement without revealing data", "Mining validation", "Wallet encryption"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is a Byzantine Fault Tolerance?",
-      options: ["Handling network failures", "Mining algorithm", "Token standard"],
-      correct: 0,
-      difficulty: 3,
-    },
+    { text: "What is a block reward?", options: ["Miners' incentive", "Transaction fee", "Smart contract payout", "Wallet bonus"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses ATOM?", options: ["Cosmos", "Polkadot", "Cardano", "Tezos"], correct: 0, difficulty: 1 },
+    { text: "What is a governance token?", options: ["Voting rights", "Stablecoin", "NFT", "Gas fee"], correct: 0, difficulty: 2 },
+    { text: "What is a wrapped token?", options: ["Token on another chain", "Burned token", "Mined token", "Locked token"], correct: 0, difficulty: 3 },
+    { text: "What is a hard fork?", options: ["Incompatible protocol change", "Soft upgrade", "New token", "Wallet split"], correct: 0, difficulty: 2 },
+    { text: "What is a light client?", options: ["Minimal blockchain data", "Full node", "Mining software", "Wallet app"], correct: 0, difficulty: 3 },
+    { text: "Which chain uses MATIC?", options: ["Polygon", "Avalanche", "Fantom", "Solana"], correct: 0, difficulty: 1 },
+    { text: "What is a relayer?", options: ["Cross-chain bridge", "Mining pool", "Wallet service", "Smart contract"], correct: 0, difficulty: 3 },
+    { text: "What is a flash loan?", options: ["Uncollateralized loan", "Long-term loan", "Stablecoin loan", "NFT loan"], correct: 0, difficulty: 2 },
+    { text: "What is a mempool?", options: ["Pending transactions", "Mined blocks", "Smart contracts", "Wallet keys"], correct: 0, difficulty: 2 },
   ],
-  // Set 5 (Day 5)
+  // Day 5
   [
-    // Простые
-    {
-      text: "What is a crypto address?",
-      options: ["Unique identifier for transactions", "Mining pool", "Exchange account"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a seed phrase?",
-      options: ["Recovery phrase for wallet", "Mining key", "Token name"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is the main purpose of mining?",
-      options: ["Validate transactions", "Trade tokens", "Store crypto"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto ticker?",
-      options: ["Symbol for cryptocurrency", "Mining tool", "Wallet ID"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is a crypto faucet?",
-      options: ["Free small amounts of crypto", "Mining reward", "Exchange fee"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a governance token?",
-      options: ["Token for voting in DAOs", "Stablecoin", "Mining reward"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto swap?",
-      options: ["Exchanging one token for another", "Mining process", "Wallet backup"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a testnet?",
-      options: ["Blockchain for testing", "Main network", "Mining pool"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "What is a consensus algorithm?",
-      options: ["Method to agree on blockchain state", "Mining hardware", "Wallet protocol"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is a reentrancy attack?",
-      options: ["Exploiting smart contract recursion", "Phishing scam", "Mining hack"],
-      correct: 0,
-      difficulty: 3,
-    },
+    { text: "What is a public key?", options: ["Wallet address", "Private key", "Transaction ID", "Smart contract"], correct: 0, difficulty: 1 },
+    { text: "Which chain uses FTM?", options: ["Fantom", "Avalanche", "Polygon", "Solana"], correct: 0, difficulty: 1 },
+    { text: "What is a soft fork?", options: ["Backward-compatible change", "Incompatible fork", "New token", "Wallet update"], correct: 0, difficulty: 2 },
+    { text: "What is a bridge?", options: ["Cross-chain transfer", "Mining tool", "Wallet type", "Smart contract"], correct: 0, difficulty: 2 },
+    { text: "What is a Sybil attack?", options: ["Multiple fake identities", "51% attack", "Double-spend", "Phishing"], correct: 0, difficulty: 3 },
+    { text: "What is a yield farm?", options: ["Earn rewards via DeFi", "Mine tokens", "Stake NFTs", "Trade stablecoins"], correct: 0, difficulty: 2 },
+    { text: "What is a block header?", options: ["Block metadata", "Transaction list", "Smart contract", "Wallet key"], correct: 0, difficulty: 3 },
+    { text: "Which chain uses ALGO?", options: ["Algorand", "Tezos", "Cardano", "Cosmos"], correct: 0, difficulty: 1 },
+    { text: "What is a zero-knowledge proof?", options: ["Verify without revealing data", "Encrypt transactions", "Mine blocks", "Sign contracts"], correct: 0, difficulty: 3 },
+    { text: "What is a liquidity pool?", options: ["Funds for trading", "Mining pool", "Wallet funds", "NFT collection"], correct: 0, difficulty: 2 },
   ],
-  // Set 6 (Day 6)
+  // Day 6
   [
-    // Простые
-    {
-      text: "What is a crypto transaction?",
-      options: ["Transfer of digital assets", "Mining block", "Wallet creation"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto bull market?",
-      options: ["Rising prices", "Falling prices", "Stable prices"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto bear market?",
-      options: ["Falling prices", "Rising prices", "Stable prices"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto hash?",
-      options: ["Unique data fingerprint", "Mining reward", "Wallet address"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is a crypto burn?",
-      options: ["Destroying tokens to reduce supply", "Mining process", "Wallet backup"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto mixer?",
-      options: ["Tool for transaction privacy", "Mining pool", "Exchange platform"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto staking pool?",
-      options: ["Group for collective staking", "Mining group", "Wallet type"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto vesting period?",
-      options: ["Time before tokens are accessible", "Mining duration", "Exchange fee"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "What is a flash loan in DeFi?",
-      options: ["Uncollateralized loan repaid in one transaction", "Long-term loan", "Mining loan"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is a Sybil attack?",
-      options: ["Creating multiple fake identities", "Hacking wallets", "Phishing scam"],
-      correct: 0,
-      difficulty: 3,
-    },
+    { text: "What is a genesis block?", options: ["First block", "Last block", "Forked block", "Empty block"], correct: 0, difficulty: 1 },
+    { text: "Which chain uses NEAR?", options: ["NEAR Protocol", "Solana", "Polkadot", "Avalanche"], correct: 0, difficulty: 1 },
+    { text: "What is a DEX?", options: ["Decentralized Exchange", "Digital Export", "Distributed Executor", "Decentralized Extractor"], correct: 0, difficulty: 1 },
+    { text: "What is a double-spend?", options: ["Spending same funds twice", "Mining twice", "Forking chain", "Hacking wallet"], correct: 0, difficulty: 2 },
+    { text: "What is a cold wallet?", options: ["Offline storage", "Online wallet", "Hot wallet", "Exchange wallet"], correct: 0, difficulty: 2 },
+    { text: "What is a testnet?", options: ["Testing blockchain", "Mainnet fork", "Private chain", "Mining network"], correct: 0, difficulty: 2 },
+    { text: "What is a block time?", options: ["Time to create block", "Transaction time", "Wallet sync time", "Fork time"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses HBAR?", options: ["Hedera", "Algorand", "Tezos", "Cosmos"], correct: 0, difficulty: 1 },
+    { text: "What is a sharded blockchain?", options: ["Parallel processing", "Single chain", "Private chain", "Forked chain"], correct: 0, difficulty: 3 },
+    { text: "What is a gas limit?", options: ["Max computation per transaction", "Max tokens", "Max blocks", "Max wallets"], correct: 0, difficulty: 2 },
   ],
-  // Set 7 (Day 7)
+  // Day 7
   [
-    // Простые
-    {
-      text: "What is a crypto block?",
-      options: ["Group of transactions", "Mining reward", "Wallet key"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto node?",
-      options: ["Computer in blockchain network", "Mining device", "Wallet app"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto market cap?",
-      options: ["Total value of circulating coins", "Mining cost", "Exchange fee"],
-      correct: 0,
-      difficulty: 1,
-    },
-    {
-      text: "What is a crypto whitepaper?",
-      options: ["Project technical document", "Marketing plan", "Wallet guide"],
-      correct: 0,
-      difficulty: 1,
-    },
-    // Средние
-    {
-      text: "What is a crypto rug pull?",
-      options: ["Scam where developers abandon project", "Mining scam", "Exchange hack"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto lending platform?",
-      options: ["Platform for borrowing/lending crypto", "Mining pool", "Wallet app"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto derivative?",
-      options: ["Financial contract based on crypto", "Mining tool", "Stablecoin"],
-      correct: 0,
-      difficulty: 2,
-    },
-    {
-      text: "What is a crypto atomic swap?",
-      options: ["Direct cross-chain token exchange", "Mining swap", "Wallet backup"],
-      correct: 0,
-      difficulty: 2,
-    },
-    // Сложные
-    {
-      text: "What is a state channel in blockchain?",
-      options: ["Off-chain transaction channel", "Mining protocol", "Wallet feature"],
-      correct: 0,
-      difficulty: 3,
-    },
-    {
-      text: "What is a double-spending problem?",
-      options: ["Spending same crypto twice", "Mining twice", "Wallet hack"],
-      correct: 0,
-      difficulty: 3,
-    },
+    { text: "What is a seed phrase?", options: ["Wallet recovery phrase", "Transaction ID", "Smart contract code", "Block hash"], correct: 0, difficulty: 1 },
+    { text: "Which chain uses ONE?", options: ["Harmony", "Fantom", "Polygon", "Avalanche"], correct: 0, difficulty: 1 },
+    { text: "What is a CEX?", options: ["Centralized Exchange", "Crypto Executor", "Chain Extension", "Centralized Extractor"], correct: 0, difficulty: 1 },
+    { text: "What is a replay attack?", options: ["Reusing transaction data", "51% attack", "Double-spend", "Phishing"], correct: 0, difficulty: 3 },
+    { text: "What is a hot wallet?", options: ["Online wallet", "Offline wallet", "Hardware wallet", "Paper wallet"], correct: 0, difficulty: 2 },
+    { text: "What is a block height?", options: ["Number of blocks", "Block size", "Transaction count", "Gas limit"], correct: 0, difficulty: 2 },
+    { text: "What is a permissioned blockchain?", options: ["Restricted access", "Public chain", "Forked chain", "Sharded chain"], correct: 0, difficulty: 3 },
+    { text: "Which chain uses VET?", options: ["VeChain", "Hedera", "Algorand", "Tezos"], correct: 0, difficulty: 1 },
+    { text: "What is a smart contract audit?", options: ["Security review", "Transaction check", "Wallet backup", "Block validation"], correct: 0, difficulty: 2 },
+    { text: "What is a wrapped Bitcoin?", options: ["Bitcoin on Ethereum", "Mined Bitcoin", "Staked Bitcoin", "Burned Bitcoin"], correct: 0, difficulty: 2 },
+  ],
+  // Day 8
+  [
+    { text: "What is a transaction hash?", options: ["Unique transaction ID", "Block number", "Wallet address", "Smart contract"], correct: 0, difficulty: 1 },
+    { text: "Which chain uses EGLD?", options: ["Elrond", "Harmony", "Fantom", "Polygon"], correct: 0, difficulty: 1 },
+    { text: "What is a governance proposal?", options: ["Community vote", "New token", "Block reward", "Gas fee"], correct: 0, difficulty: 2 },
+    { text: "What is a chain ID?", options: ["Network identifier", "Block number", "Wallet key", "Transaction count"], correct: 0, difficulty: 2 },
+    { text: "What is a cross-chain swap?", options: ["Token exchange between chains", "Wallet swap", "Fork swap", "Mining swap"], correct: 0, difficulty: 3 },
+    { text: "What is a burn mechanism?", options: ["Destroying tokens", "Minting tokens", "Staking tokens", "Trading tokens"], correct: 0, difficulty: 2 },
+    { text: "What is a full node?", options: ["Stores entire blockchain", "Light client", "Mining node", "Wallet node"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses ROSE?", options: ["Oasis", "VeChain", "Hedera", "Algorand"], correct: 0, difficulty: 1 },
+    { text: "What is a timelock?", options: ["Delayed transaction", "Instant transaction", "Block reward", "Gas fee"], correct: 0, difficulty: 3 },
+    { text: "What is a validator?", options: ["Confirms transactions", "Mines blocks", "Hacks wallets", "Creates tokens"], correct: 0, difficulty: 2 },
+  ],
+  // Day 9
+  [
+    { text: "What is a wallet address?", options: ["Public key derivative", "Private key", "Transaction ID", "Block hash"], correct: 0, difficulty: 1 },
+    { text: "Which chain uses FLOW?", options: ["Flow", "Elrond", "Harmony", "Fantom"], correct: 0, difficulty: 1 },
+    { text: "What is a layer-1 blockchain?", options: ["Base protocol", "Sidechain", "Layer-2 solution", "Private chain"], correct: 0, difficulty: 2 },
+    { text: "What is a rebase token?", options: ["Adjusts supply", "Stablecoin", "Governance token", "NFT"], correct: 0, difficulty: 3 },
+    { text: "What is a dust attack?", options: ["Small transactions to deanonymize", "51% attack", "Double-spend", "Phishing"], correct: 0, difficulty: 3 },
+    { text: "What is a block explorer?", options: ["Blockchain data viewer", "Mining tool", "Wallet app", "Smart contract"], correct: 0, difficulty: 1 },
+    { text: "What is a parachain?", options: ["Polkadot's parallel chain", "Mainnet fork", "Sidechain", "Testnet"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses KSM?", options: ["Kusama", "Oasis", "VeChain", "Hedera"], correct: 0, difficulty: 1 },
+    { text: "What is a gas war?", options: ["Competing for transaction priority", "Mining competition", "Wallet hacking", "Fork conflict"], correct: 0, difficulty: 2 },
+    { text: "What is a snapshot?", options: ["Record of balances", "Block reward", "Transaction log", "Wallet backup"], correct: 0, difficulty: 2 },
+  ],
+  // Day 10
+  [
+    { text: "What is a smart wallet?", options: ["Programmable wallet", "Hardware wallet", "Paper wallet", "Exchange wallet"], correct: 0, difficulty: 2 },
+    { text: "Which chain uses AR?", options: ["Arweave", "Flow", "Elrond", "Harmony"], correct: 0, difficulty: 1 },
+    { text: "What is a vesting schedule?", options: ["Token release plan", "Mining schedule", "Transaction queue", "Block time"], correct: 0, difficulty: 2 },
+    { text: "What is a permissionless blockchain?", options: ["Open to all", "Restricted access", "Private chain", "Forked chain"], correct: 0, difficulty: 2 },
+    { text: "What is a sandwich attack?", options: ["Manipulating transaction order", "51% attack", "Double-spend", "Phishing"], correct: 0, difficulty: 3 },
+    { text: "What is a block subsidy?", options: ["Mining reward", "Transaction fee", "Gas limit", "Wallet bonus"], correct: 0, difficulty: 2 },
+    { text: "What is a rollup?", options: ["Layer-2 scaling", "New blockchain", "Fork type", "Wallet backup"], correct: 0, difficulty: 3 },
+    { text: "Which chain uses IOTA?", options: ["IOTA", "Arweave", "Flow", "Kusama"], correct: 0, difficulty: 1 },
+    { text: "What is a faucet?", options: ["Free testnet tokens", "Mining pool", "Wallet app", "Smart contract"], correct: 0, difficulty: 1 },
+    { text: "What is a chain reorganization?", options: ["Replacing blocks", "New fork", "Wallet sync", "Gas fee"], correct: 0, difficulty: 3 },
   ],
 ];
 
