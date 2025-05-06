@@ -16,6 +16,7 @@ function App() {
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0); // Новое состояние для суммарных очков
   const [lives, setLives] = useState(3);
   const [lastLifeUpdate, setLastLifeUpdate] = useState(new Date().toISOString());
   const [feedback, setFeedback] = useState('');
@@ -26,7 +27,7 @@ function App() {
   const [lastRoundTimestamp, setLastRoundTimestamp] = useState('0');
   const [lastCastTimestamp, setLastCastTimestamp] = useState('0');
   const [lastDonateTimestamp, setLastDonateTimestamp] = useState('0');
-  const [isAnswering, setIsAnswering] = useState(false); // Новое состояние для блокировки
+  const [isAnswering, setIsAnswering] = useState(false);
   const maxQuestions = 10;
 
   // Загрузка состояния из localStorage после получения address
@@ -34,6 +35,7 @@ function App() {
     if (address) {
       setCurrentQuestion(parseInt(localStorage.getItem(getStorageKey('currentQuestion')) || '0'));
       setScore(parseInt(localStorage.getItem(getStorageKey('score')) || '0'));
+      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0')); // Загружаем totalScore
       setLives(parseInt(localStorage.getItem(getStorageKey('lives')) || '3'));
       setLastLifeUpdate(localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString());
       setGameOver(JSON.parse(localStorage.getItem(getStorageKey('gameOver')) || 'false'));
@@ -62,6 +64,7 @@ function App() {
       // Сбрасываем только UI-состояние, сохраняя localStorage
       setCurrentQuestion(0);
       setScore(0);
+      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0')); // Сохраняем totalScore
       setLives(3);
       setLastLifeUpdate(new Date().toISOString());
       setGameOver(false);
@@ -291,20 +294,27 @@ function App() {
     if (address) {
       localStorage.setItem(getStorageKey('currentQuestion'), currentQuestion.toString());
       localStorage.setItem(getStorageKey('score'), score.toString());
+      localStorage.setItem(getStorageKey('totalScore'), totalScore.toString()); // Сохраняем totalScore
       localStorage.setItem(getStorageKey('lives'), lives.toString());
       localStorage.setItem(getStorageKey('gameOver'), JSON.stringify(gameOver));
       localStorage.setItem(getStorageKey('showFinalScreen'), JSON.stringify(showFinalScreen));
       localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(showGameOverPrompt));
     }
-  }, [currentQuestion, score, lives, gameOver, showFinalScreen, showGameOverPrompt, address]);
+  }, [currentQuestion, score, totalScore, lives, gameOver, showFinalScreen, showGameOverPrompt, address]);
 
   const handleAnswer = (index: number) => {
-    if (gameOver || showFinalScreen || showGameOverPrompt || isAnswering) return; // Блокировка при isAnswering
-    setIsAnswering(true); // Блокируем кнопки
+    if (gameOver || showFinalScreen || showGameOverPrompt || isAnswering) return;
+    setIsAnswering(true);
 
     let newLives = lives;
     if (index === selectedQuestions[currentQuestion].correct) {
-      setScore(score + 10 * multiplier);
+      const newScore = score + 10 * multiplier;
+      setScore(newScore);
+      setTotalScore(prev => {
+        const updatedTotal = prev + 10 * multiplier;
+        localStorage.setItem(getStorageKey('totalScore'), updatedTotal.toString()); // Обновляем totalScore
+        return updatedTotal;
+      });
       setFeedback('Correct!');
       setFeedbackImage('/rocker.png');
     } else {
@@ -327,14 +337,14 @@ function App() {
         localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
         localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(newLives <= 0));
         localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
-        setIsAnswering(false); // Разблокируем кнопки
+        setIsAnswering(false);
       }, 1500);
     } else {
       setTimeout(() => {
         setCurrentQuestion(currentQuestion + 1);
         setFeedback('');
         setFeedbackImage('');
-        setIsAnswering(false); // Разблокируем кнопки
+        setIsAnswering(false);
       }, 1500);
     }
   };
@@ -342,7 +352,7 @@ function App() {
   const handleRestart = () => {
     if (lives <= 0 || !canPlayRound()) return;
     setCurrentQuestion(0);
-    setScore(0);
+    setScore(0); // Сбрасываем score, но не totalScore
     setLives(3);
     setFeedback('');
     setFeedbackImage('');
@@ -383,6 +393,8 @@ function App() {
       {address && showGameOverPrompt ? (
         <div>
           <h2>Game Over!</h2>
+          <p>Final Score: {score}</p> {/* Показываем score при Game Over */}
+          <p>Total Score: {totalScore}</p> {/* Показываем totalScore */}
           <p>Want to continue playing?</p>
           <img src="/bear.png" alt="game over" style={{ width: '100px' }} />
           <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
@@ -397,7 +409,7 @@ function App() {
             <button
               key={index}
               onClick={() => handleAnswer(index)}
-              disabled={!canPlayRound() || isAnswering} // Блокировка кнопок
+              disabled={!canPlayRound() || isAnswering}
             >
               {option}
             </button>
@@ -409,6 +421,7 @@ function App() {
             </div>
           )}
           <p>Score: {score}</p>
+          <p>Total Score: {totalScore}</p> {/* Показываем totalScore в игре */}
           <p>Lives: {lives}</p>
           <p>Multiplier: x{multiplier.toFixed(1)}</p>
           <p>
@@ -431,6 +444,7 @@ function App() {
           <h2>{feedback}</h2>
           <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />
           <p>Final Score: {score}</p>
+          <p>Total Score: {totalScore}</p> {/* Показываем totalScore при завершении */}
           {lives === 0 ? (
             <>
               <p>Want to continue playing?</p>
