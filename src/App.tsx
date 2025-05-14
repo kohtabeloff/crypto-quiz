@@ -18,15 +18,11 @@ function App() {
   const [score, setScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [lives, setLives] = useState(3);
-  const [lastLifeUpdate, setLastLifeUpdate] = useState(new Date().toISOString());
   const [feedback, setFeedback] = useState('');
   const [feedbackImage, setFeedbackImage] = useState('');
   const [gameOver, setGameOver] = useState(false);
   const [showFinalScreen, setShowFinalScreen] = useState(false);
   const [showGameOverPrompt, setShowGameOverPrompt] = useState(false);
-  const [lastRoundTimestamp, setLastRoundTimestamp] = useState('0');
-  const [lastCastTimestamp, setLastCastTimestamp] = useState('0');
-  const [lastDonateTimestamp, setLastDonateTimestamp] = useState('0');
   const [isAnswering, setIsAnswering] = useState(false);
   const maxQuestions = 10;
 
@@ -61,12 +57,8 @@ function App() {
         setShowGameOverPrompt(JSON.parse(localStorage.getItem(getStorageKey('showGameOverPrompt')) || 'false'));
       }
 
-      // TotalScore и таймеры загружаем всегда
+      // TotalScore загружаем всегда
       setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0'));
-      setLastLifeUpdate(localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString());
-      setLastRoundTimestamp(localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0');
-      setLastCastTimestamp(localStorage.getItem(getStorageKey('lastCastTimestamp')) || '0');
-      setLastDonateTimestamp(localStorage.getItem(getStorageKey('lastDonateTimestamp')) || '0');
     }
   }, [address]);
 
@@ -84,18 +76,14 @@ function App() {
     try {
       await disconnect();
       alert('Wallet disconnected!');
-      // Сбрасываем UI-состояние, сохраняя localStorage
+      // Сбрасываем UI-состояние
       setCurrentQuestion(0);
       setScore(0);
       setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0'));
       setLives(3);
-      setLastLifeUpdate(new Date().toISOString());
       setGameOver(false);
       setShowFinalScreen(false);
       setShowGameOverPrompt(false);
-      setLastRoundTimestamp('0');
-      setLastCastTimestamp('0');
-      setLastDonateTimestamp('0');
     } catch (error: unknown) {
       console.error('Disconnect error:', error);
       alert('Disconnect failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
@@ -104,8 +92,9 @@ function App() {
 
   const canDonate = () => {
     const now = Date.now();
-    const lastDonate = parseInt(lastDonateTimestamp) || 0;
+    const lastDonate = parseInt(localStorage.getItem(getStorageKey('lastDonateTimestamp')) || '0');
     const oneDayInMs = 24 * 60 * 60 * 1000;
+    console.log('canDonate:', { now, lastDonate, diff: now - lastDonate, can: now - lastDonate >= oneDayInMs }); // Отладка
     return now - lastDonate >= oneDayInMs;
   };
 
@@ -150,9 +139,6 @@ function App() {
       });
       await tx.wait();
       setLives(3);
-      setLastLifeUpdate(new Date().toISOString());
-      setLastDonateTimestamp(Date.now().toString());
-      setLastRoundTimestamp('0');
       setGameOver(false);
       setShowFinalScreen(false);
       setShowGameOverPrompt(false);
@@ -175,8 +161,9 @@ function App() {
 
   const canCast = () => {
     const now = Date.now();
-    const lastCast = parseInt(lastCastTimestamp) || 0;
+    const lastCast = parseInt(localStorage.getItem(getStorageKey('lastCastTimestamp')) || '0');
     const oneDayInMs = 24 * 60 * 60 * 1000;
+    console.log('canCast:', { now, lastCast, diff: now - lastCast, can: now - lastCast >= oneDayInMs }); // Отладка
     return now - lastCast >= oneDayInMs;
   };
 
@@ -194,9 +181,6 @@ function App() {
         localStorage.setItem(getStorageKey('lives'), newLives.toString());
         return newLives;
       });
-      setLastLifeUpdate(new Date().toISOString());
-      setLastCastTimestamp(Date.now().toString());
-      setLastRoundTimestamp('0');
       setGameOver(false);
       setShowFinalScreen(false);
       setShowGameOverPrompt(false);
@@ -260,23 +244,23 @@ function App() {
   const [multiplier, setMultiplier] = useState(getMultiplier());
 
   const getTimeUntilNextLife = () => {
-    const now = new Date();
-    const lastUpdate = new Date(lastLifeUpdate);
-    const hoursPassed = (now.getTime() - lastUpdate.getTime()) / (1000 * 60 * 60);
+    const now = Date.now();
+    const lastUpdate = Date.parse(localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString());
+    const hoursPassed = (now - lastUpdate) / (1000 * 60 * 60);
     const hoursRemaining = 4 - hoursPassed;
     return hoursRemaining > 0 ? Math.ceil(hoursRemaining * 60) : 0;
   };
 
   const canPlayRound = () => {
     const now = Date.now();
-    const lastRound = parseInt(lastRoundTimestamp) || 0;
+    const lastRound = parseInt(localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0');
     const oneDayInMs = 24 * 60 * 60 * 1000;
     return now - lastRound >= oneDayInMs;
   };
 
   const getTimeUntilNextRound = () => {
     const now = Date.now();
-    const lastRound = parseInt(lastRoundTimestamp) || 0;
+    const lastRound = parseInt(localStorage.getItem(getStorageKey('lastRoundTimestamp')) || '0');
     const oneDayInMs = 24 * 60 * 60 * 1000;
     const timeRemaining = oneDayInMs - (now - lastRound);
     return timeRemaining > 0 ? Math.ceil(timeRemaining / (1000 * 60)) : 0;
@@ -284,9 +268,9 @@ function App() {
 
   useEffect(() => {
     const checkLifeUpdate = () => {
-      const now = new Date();
-      const lastUpdate = new Date(lastLifeUpdate);
-      const hoursPassed = (now.getTime() - lastUpdate.getTime()) / (1000 * 60 * 60);
+      const now = Date.now();
+      const lastUpdate = Date.parse(localStorage.getItem(getStorageKey('lastLifeUpdate')) || new Date().toISOString());
+      const hoursPassed = (now - lastUpdate) / (1000 * 60 * 60);
 
       if (hoursPassed >= 4 && lives < 3) {
         const newLives = Math.min(lives + 1, 3);
@@ -299,7 +283,6 @@ function App() {
           setShowGameOverPrompt(false);
           setFeedback('');
           setFeedbackImage('');
-          setLastRoundTimestamp('0');
           localStorage.setItem(getStorageKey('lastRoundTimestamp'), '0');
           localStorage.setItem(getStorageKey('gameOver'), 'false');
           localStorage.setItem(getStorageKey('showFinalScreen'), 'false');
@@ -311,7 +294,7 @@ function App() {
     checkLifeUpdate();
     const interval = setInterval(checkLifeUpdate, 60 * 1000);
     return () => clearInterval(interval);
-  }, [lives, lastLifeUpdate, address]);
+  }, [lives, address]);
 
   useEffect(() => {
     if (address) {
@@ -345,13 +328,12 @@ function App() {
           setGameOver(true);
           setShowFinalScreen(true);
           setShowGameOverPrompt(false);
-          setLastRoundTimestamp(Date.now().toString());
+          localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
           setFeedback('Round Completed!');
           setFeedbackImage('/bull.png');
           localStorage.setItem(getStorageKey('gameOver'), 'true');
           localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
           localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
-          localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
           setIsAnswering(false);
         }, 1500);
       } else {
@@ -367,20 +349,21 @@ function App() {
       setLives(newLives);
       localStorage.setItem(getStorageKey('lives'), newLives.toString());
       setFeedback('Wrong!');
-      setFeedbackImage('/wrong.png'); // Картинка для неверного ответа
+      setFeedbackImage('/wrong.png');
+      console.log('Wrong answer:', { newLives, showGameOverPrompt, gameOver, showFinalScreen, feedbackImage }); // Отладка
       if (newLives <= 0) {
         setTimeout(() => {
           setGameOver(true);
           setShowFinalScreen(true);
           setShowGameOverPrompt(true);
-          setLastRoundTimestamp(Date.now().toString());
+          localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
           setFeedback('Game Over!');
-          setFeedbackImage('/wrong.png'); // Используем wrong.png для Game Over
+          setFeedbackImage('/wrong.png');
           localStorage.setItem(getStorageKey('gameOver'), 'true');
           localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
           localStorage.setItem(getStorageKey('showGameOverPrompt'), 'true');
-          localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
           setIsAnswering(false);
+          console.log('Game Over:', { lives: newLives, showGameOverPrompt, gameOver, showFinalScreen, feedbackImage }); // Отладка
         }, 1500);
       } else {
         setTimeout(() => {
@@ -410,7 +393,6 @@ function App() {
     localStorage.setItem(getStorageKey('showFinalScreen'), 'false');
     localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
     localStorage.setItem(getStorageKey('lastLifeUpdate'), new Date().toISOString());
-    setLastRoundTimestamp('0');
     localStorage.setItem(getStorageKey('lastRoundTimestamp'), '0');
   };
 
@@ -441,8 +423,12 @@ function App() {
           <p>Want to continue playing?</p>
           <img src="/wrong.png" alt="game over" style={{ width: '100px' }} />
           <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
-          {canDonate() && <button onClick={handleDonate}>Restore Lives (0.0001 ETH)</button>}
-          {canCast() && <button onClick={handleCast}>Cast on Farcaster for 1 Life</button>}
+          <button onClick={handleDonate} disabled={!canDonate()}>
+            Restore Lives (0.0001 ETH)
+          </button>
+          <button onClick={handleCast} disabled={!canCast()}>
+            Cast on Farcaster for 1 Life
+          </button>
         </div>
       ) : address && (!gameOver || !showFinalScreen) ? (
         <div>
@@ -472,10 +458,14 @@ function App() {
               ? `Next life in ~${getTimeUntilNextLife()} min`
               : 'Lives full!'}
           </p>
-          {lives <= 0 && (
+          {lives === 0 && (
             <div>
-              {canDonate() && <button onClick={handleDonate}>Restore Lives (0.0001 ETH)</button>}
-              {canCast() && <button onClick={handleCast}>Cast on Farcaster for 1 Life</button>}
+              <button onClick={handleDonate} disabled={!canDonate()}>
+                Restore Lives (0.0001 ETH)
+              </button>
+              <button onClick={handleCast} disabled={!canCast()}>
+                Cast on Farcaster for 1 Life
+              </button>
             </div>
           )}
           {!canPlayRound() && (
@@ -488,12 +478,16 @@ function App() {
           {feedbackImage && <img src={feedbackImage} alt="feedback" style={{ width: '100px' }} />}
           <p>Final Score: {score}</p>
           <p>Total Score: {totalScore}</p>
-          {lives <= 0 ? (
+          {lives === 0 ? (
             <>
               <p>Want to continue playing?</p>
               <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
-              {canDonate() && <button onClick={handleDonate}>Restore Lives (0.0001 ETH)</button>}
-              {canCast() && <button onClick={handleCast}>Cast on Farcaster for 1 Life</button>}
+              <button onClick={handleDonate} disabled={!canDonate()}>
+                Restore Lives (0.0001 ETH)
+              </button>
+              <button onClick={handleCast} disabled={!canCast()}>
+                Cast on Farcaster for 1 Life
+              </button>
             </>
           ) : !canPlayRound() ? (
             <p>Next round in ~{getTimeUntilNextRound()} min</p>
