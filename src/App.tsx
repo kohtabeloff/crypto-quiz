@@ -33,6 +33,8 @@ function App() {
       const oneDayInMs = 24 * 60 * 60 * 1000;
       const isNewDay = Date.now() - lastRound >= oneDayInMs;
 
+      console.log('Loading state:', { address, lastRound, isNewDay }); // Отладка
+
       if (isNewDay) {
         // Новый день: сбрасываем игру
         setCurrentQuestion(0);
@@ -47,14 +49,30 @@ function App() {
         localStorage.setItem(getStorageKey('gameOver'), 'false');
         localStorage.setItem(getStorageKey('showFinalScreen'), 'false');
         localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
+        console.log('New day reset:', { currentQuestion: 0, score: 0, lives: 3 }); // Отладка
       } else {
         // Продолжаем старую игру
-        setCurrentQuestion(parseInt(localStorage.getItem(getStorageKey('currentQuestion')) || '0'));
-        setScore(parseInt(localStorage.getItem(getStorageKey('score')) || '0'));
-        setLives(parseInt(localStorage.getItem(getStorageKey('lives')) || '3'));
-        setGameOver(JSON.parse(localStorage.getItem(getStorageKey('gameOver')) || 'false'));
-        setShowFinalScreen(JSON.parse(localStorage.getItem(getStorageKey('showFinalScreen')) || 'false'));
-        setShowGameOverPrompt(JSON.parse(localStorage.getItem(getStorageKey('showGameOverPrompt')) || 'false'));
+        const savedQuestion = parseInt(localStorage.getItem(getStorageKey('currentQuestion')) || '0');
+        const savedScore = parseInt(localStorage.getItem(getStorageKey('score')) || '0');
+        const savedLives = parseInt(localStorage.getItem(getStorageKey('lives')) || '3');
+        const savedGameOver = JSON.parse(localStorage.getItem(getStorageKey('gameOver')) || 'false');
+        const savedFinalScreen = JSON.parse(localStorage.getItem(getStorageKey('showFinalScreen')) || 'false');
+        const savedGameOverPrompt = JSON.parse(localStorage.getItem(getStorageKey('showGameOverPrompt')) || 'false');
+
+        setCurrentQuestion(savedQuestion);
+        setScore(savedScore);
+        setLives(savedLives);
+        setGameOver(savedGameOver);
+        setShowFinalScreen(savedFinalScreen);
+        setShowGameOverPrompt(savedGameOverPrompt);
+        console.log('Restored state:', {
+          currentQuestion: savedQuestion,
+          score: savedScore,
+          lives: savedLives,
+          gameOver: savedGameOver,
+          showFinalScreen: savedFinalScreen,
+          showGameOverPrompt: savedGameOverPrompt,
+        }); // Отладка
       }
 
       // TotalScore загружаем всегда
@@ -76,14 +94,16 @@ function App() {
     try {
       await disconnect();
       alert('Wallet disconnected!');
-      // Сбрасываем UI-состояние
+      // Сбрасываем UI-состояние, но сохраняем localStorage
       setCurrentQuestion(0);
       setScore(0);
-      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0'));
       setLives(3);
       setGameOver(false);
       setShowFinalScreen(false);
       setShowGameOverPrompt(false);
+      // Не сбрасываем totalScore в localStorage
+      setTotalScore(parseInt(localStorage.getItem(getStorageKey('totalScore')) || '0'));
+      console.log('Disconnected, UI reset:', { currentQuestion: 0, score: 0, lives: 3 }); // Отладка
     } catch (error: unknown) {
       console.error('Disconnect error:', error);
       alert('Disconnect failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
@@ -305,6 +325,14 @@ function App() {
       localStorage.setItem(getStorageKey('gameOver'), JSON.stringify(gameOver));
       localStorage.setItem(getStorageKey('showFinalScreen'), JSON.stringify(showFinalScreen));
       localStorage.setItem(getStorageKey('showGameOverPrompt'), JSON.stringify(showGameOverPrompt));
+      console.log('Saved state to localStorage:', {
+        currentQuestion,
+        score,
+        lives,
+        gameOver,
+        showFinalScreen,
+        showGameOverPrompt,
+      }); // Отладка
     }
   }, [currentQuestion, score, totalScore, lives, gameOver, showFinalScreen, showGameOverPrompt, address]);
 
@@ -335,6 +363,7 @@ function App() {
           localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
           localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
           setIsAnswering(false);
+          console.log('Round completed:', { score: newScore, totalScore: totalScore + 10 * multiplier }); // Отладка
         }, 1500);
       } else {
         setTimeout(() => {
@@ -349,7 +378,7 @@ function App() {
       setLives(newLives);
       localStorage.setItem(getStorageKey('lives'), newLives.toString());
       setFeedback('Wrong!');
-      setFeedbackImage('/wrong.png');
+      setFeedbackImage('/wronganswer.png'); // Обновлено на wronganswer.png
       console.log('Wrong answer:', { newLives, showGameOverPrompt, gameOver, showFinalScreen, feedbackImage }); // Отладка
       if (newLives <= 0) {
         setTimeout(() => {
@@ -358,7 +387,7 @@ function App() {
           setShowGameOverPrompt(true);
           localStorage.setItem(getStorageKey('lastRoundTimestamp'), Date.now().toString());
           setFeedback('Game Over!');
-          setFeedbackImage('/wrong.png');
+          setFeedbackImage('/gameover.png'); // Обновлено на gameover.png
           localStorage.setItem(getStorageKey('gameOver'), 'true');
           localStorage.setItem(getStorageKey('showFinalScreen'), 'true');
           localStorage.setItem(getStorageKey('showGameOverPrompt'), 'true');
@@ -394,6 +423,7 @@ function App() {
     localStorage.setItem(getStorageKey('showGameOverPrompt'), 'false');
     localStorage.setItem(getStorageKey('lastLifeUpdate'), new Date().toISOString());
     localStorage.setItem(getStorageKey('lastRoundTimestamp'), '0');
+    console.log('Restarted game:', { currentQuestion: 0, score: 0, lives: 3 }); // Отладка
   };
 
   useEffect(() => {
@@ -421,7 +451,7 @@ function App() {
           <p>Final Score: {score}</p>
           <p>Total Score: {totalScore}</p>
           <p>Want to continue playing?</p>
-          <img src="/wrong.png" alt="game over" style={{ width: '100px' }} />
+          <img src="/gameover.png" alt="game over" style={{ width: '100px' }} />
           <p>Wait for lives to restore (~{getTimeUntilNextLife()} min)</p>
           <button onClick={handleDonate} disabled={!canDonate()}>
             Restore Lives (0.0001 ETH)
